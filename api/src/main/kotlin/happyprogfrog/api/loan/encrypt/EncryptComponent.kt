@@ -10,7 +10,7 @@ import javax.crypto.spec.SecretKeySpec
 @Component
 class EncryptComponent {
     companion object {
-        private const val secretKey = "12345678901234561234567890123456"
+        private const val SECRET_KEY = "12345678901234561234567890123456"
     }
 
     private val encoder = Base64.getEncoder();
@@ -18,7 +18,7 @@ class EncryptComponent {
 
     fun encryptString(encryptString: String): String {
         // 암호화할 String 을 받아서, ByteArray 로 변환을 하고, 암호화를 한 다음에
-        val encryptedString = cipherPkcs5(Cipher.ENCRYPT_MODE, secretKey).doFinal(encryptString.toByteArray(Charsets.UTF_8))
+        val encryptedString = cipherPkcs5(Cipher.ENCRYPT_MODE, SECRET_KEY).doFinal(encryptString.toByteArray(Charsets.UTF_8))
 
         // 인코딩을 해서 리턴
         return String(encoder.encode(encryptedString))
@@ -30,7 +30,7 @@ class EncryptComponent {
         val byteString = decoder.decode(decryptString.toByteArray(Charsets.UTF_8))
 
         // 복호화를 한 후에 리턴
-        return String(cipherPkcs5(Cipher.DECRYPT_MODE, secretKey).doFinal(byteString))
+        return String(cipherPkcs5(Cipher.DECRYPT_MODE, SECRET_KEY).doFinal(byteString))
     }
 
     fun cipherPkcs5(opMode: Int, secretKey: String): Cipher {
