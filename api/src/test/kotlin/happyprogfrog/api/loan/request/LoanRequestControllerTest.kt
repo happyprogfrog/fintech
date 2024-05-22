@@ -37,7 +37,7 @@ class LoanRequestControllerTest {
     private lateinit var loanRequestServiceImpl: LoanRequestServiceImpl
 
     companion object {
-        private const val baseUrl = "/fintect/api/v1"
+        private const val BASE_URL = "/fintech/api/v1"
     }
 
     @BeforeEach
@@ -72,9 +72,8 @@ class LoanRequestControllerTest {
 
         // when
         // then
-
         mockMvc.post(
-            "$baseUrl/request"
+            "$BASE_URL/request"
         ) {
             contentType = MediaType.APPLICATION_JSON
             accept = MediaType.APPLICATION_JSON
