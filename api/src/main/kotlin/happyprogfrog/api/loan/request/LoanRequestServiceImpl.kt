@@ -12,10 +12,13 @@ class LoanRequestServiceImpl(
     private val encryptComponent: EncryptComponent
 ): LoanRequestService {
 
+    /**
+     * 대출 심사 요청
+     */
     override fun loanRequestMain(
         loanRequestInputDto: LoanRequestDto.LoanRequestInputDto
     ): LoanRequestDto.LoanRequestResponseDto {
-        // 유저키 생성
+        // 유저 키 생성
         val userKey = generateKey.generateUserKey()
 
         // 주민 번호 암호화
@@ -31,9 +34,14 @@ class LoanRequestServiceImpl(
         return LoanRequestDto.LoanRequestResponseDto(userKey)
     }
 
-    override fun saveUserInfo(userInfoDto: UserInfoDto) =
-        userInfoRepository.save(userInfoDto.toEntity())
+    /**
+     * 유저 정보 저장
+     */
+    override fun saveUserInfo(userInfoDto: UserInfoDto) = userInfoRepository.save(userInfoDto.toEntity())
 
+    /**
+     * 카프카를 통해서 유저 심사 요청
+     */
     override fun loanRequestReview(userKey: String) {
         // TODO
     }
