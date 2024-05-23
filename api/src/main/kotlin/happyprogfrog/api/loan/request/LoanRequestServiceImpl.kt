@@ -28,7 +28,7 @@ class LoanRequestServiceImpl(
         loanRequestInputDto.userRegistrationNumber =
             encryptComponent.encryptString(loanRequestInputDto.userRegistrationNumber)
 
-        val userInfoDto = loanRequestInputDto.toUserInfoDto(userKey);
+        val userInfoDto = loanRequestInputDto.toUserInfoDto(userKey)
 
         // 유저 정보 저장
         saveUserInfo(userInfoDto)
