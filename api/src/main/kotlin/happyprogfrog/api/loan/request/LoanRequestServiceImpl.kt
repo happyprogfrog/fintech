@@ -3,13 +3,16 @@ package happyprogfrog.api.loan.request
 import happyprogfrog.api.loan.GenerateKey
 import happyprogfrog.api.loan.encrypt.EncryptComponent
 import happyprogfrog.domain.repository.UserInfoRepository
+import happyprogfrog.kafka.enum.KafkaTopic
+import happyprogfrog.kafka.producer.LoanRequestSender
 import org.springframework.stereotype.Service
 
 @Service
 class LoanRequestServiceImpl(
     private val generateKey: GenerateKey,
     private val userInfoRepository: UserInfoRepository,
-    private val encryptComponent: EncryptComponent
+    private val encryptComponent: EncryptComponent,
+    private val loanRequestSender: LoanRequestSender
 ): LoanRequestService {
 
     /**
@@ -25,11 +28,13 @@ class LoanRequestServiceImpl(
         loanRequestInputDto.userRegistrationNumber =
             encryptComponent.encryptString(loanRequestInputDto.userRegistrationNumber)
 
+        val userInfoDto = loanRequestInputDto.toUserInfoDto(userKey);
+
         // 유저 정보 저장
-        saveUserInfo(loanRequestInputDto.toUserInfoDto(userKey))
+        saveUserInfo(userInfoDto)
 
         // 카프카를 통해서 유저 심사 요청
-        loanRequestReview(userKey)
+        loanRequestReview(userInfoDto)
 
         return LoanRequestDto.LoanRequestResponseDto(userKey)
     }
@@ -42,7 +47,10 @@ class LoanRequestServiceImpl(
     /**
      * 카프카를 통해서 유저 심사 요청
      */
-    override fun loanRequestReview(userKey: String) {
-        // TODO
+    override fun loanRequestReview(userInfoDto: UserInfoDto) {
+        loanRequestSender.sendMessage(
+            KafkaTopic.LOAN_REQUEST,
+            userInfoDto.toLoanRequestKafkaDto()
+        )
     }
 }
