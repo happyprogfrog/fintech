@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+// hostname/css 로 들어오는 요청들을 css 모듈로 프록시
 @RestController
 @RequestMapping("/css/api/v1")
 class LoanRequestController(

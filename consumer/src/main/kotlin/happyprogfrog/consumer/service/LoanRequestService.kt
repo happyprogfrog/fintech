@@ -13,7 +13,7 @@ class LoanRequestService(
     private val loanReviewRepository: LoanReviewRepository
 ) {
     companion object {
-        const val CSS_URL = "http://localhost:8081/css/api/v1/request"
+        const val NGINX_URL = "http://localhost:8085/css/api/v1/request"
     }
 
     fun loanRequest(loanRequestDto: LoanRequestDto) {
@@ -31,7 +31,7 @@ class LoanRequestService(
             .setReadTimeout(Duration.ofMillis(1000))
             .build()
 
-        return restTemplate.postForEntity(CSS_URL, loanRequestDto, ReviewResponseDto::class.java).body!!
+        return restTemplate.postForEntity(NGINX_URL, loanRequestDto, ReviewResponseDto::class.java).body!!
     }
 
     private fun saveLoanReviewData(loanReview: LoanReview) = loanReviewRepository.save(loanReview)
